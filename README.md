@@ -87,3 +87,21 @@ Deprecated features
 -------------------
 
 - TopoLVM currently uses [Pod security policy](https://kubernetes.io/docs/concepts/policy/pod-security-policy/), but it has been deprecated since Kubernetes 1.21, and will be deleted in Kubernetes 1.25. So it is also deprecated in TopoLVM.
+
+
+
+
+## 编译镜像
+
+```shell
+make image IMAGE_PREFIX=dockerhub.dev.data.qingcloud.link/topolvm/
+```
+
+这个命令会build两个镜像，一般第一个没有问题；但是第二个会由于网络原因，导致编译命令失败，build镜像失败；如果失败，可以参考 Dockerfile.with-sidecar 手动进入 build-env 容器，进行手动编译命令：
+```shell
+docker run -it --rm -v /root/topolvm:/workdir golang:1.18-buster bash
+
+# 在容器内执行
+make csi-sidecars 
+```
+然后把Dockerfile.with-sidecar改成直接copy编译后的命令即可；

@@ -8,6 +8,8 @@ COPY . /workdir
 WORKDIR /workdir
 
 RUN touch csi/*.go lvmd/proto/*.go \
+    && go env -w GO111MODULE=on \
+    &&  go env -w GOPROXY=https://goproxy.cn,direct \
     && make build-topolvm TOPOLVM_VERSION=${TOPOLVM_VERSION}
 
 # TopoLVM container

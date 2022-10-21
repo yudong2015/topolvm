@@ -6,7 +6,9 @@ FROM golang:1.18-buster AS build-env
 COPY . /workdir
 WORKDIR /workdir
 
-RUN make csi-sidecars
+RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
+    && make csi-sidecars
 
 # TopoLVM container
 FROM ${IMAGE_PREFIX}topolvm:devel
